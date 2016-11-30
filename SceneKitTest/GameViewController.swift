@@ -2,7 +2,7 @@
 //  GameViewController.swift
 //  SceneKitTest
 //
-//  Created by Daniel Tartaglia on 11/10/16.
+//  Created by Daniel Tartaglia on 11/30/16.
 //  Copyright © 2016 Haneke Design. All rights reserved.
 //
 
@@ -16,7 +16,7 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         
         // create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+        let scene = SCNScene(named: "art.scnassets/sphereRigged.dae")!
         
         // create and add a camera to the scene
         let cameraNode = SCNNode()
@@ -24,7 +24,7 @@ class GameViewController: UIViewController {
         scene.rootNode.addChildNode(cameraNode)
         
         // place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
+        cameraNode.position = SCNVector3(x: 0, y: 0, z: 180)
         
         // create and add a light to the scene
         let lightNode = SCNNode()
@@ -41,11 +41,11 @@ class GameViewController: UIViewController {
         scene.rootNode.addChildNode(ambientLightNode)
         
         // retrieve the ship node
-        let ship = scene.rootNode.childNode(withName: "ship", recursively: true)!
+        let ship = scene.rootNode.childNode(withName: "Sphere", recursively: true)!
         
         // animate the 3d object
         ship.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: 2, z: 0, duration: 1)))
-
+        
         // retrieve the SCNView
         let scnView = self.view as! SCNView
         
@@ -80,12 +80,7 @@ class GameViewController: UIViewController {
             
             // get its material
             let material = result.node!.geometry!.firstMaterial!
-
-			let sphere = scnView.scene?.rootNode.childNode(withName: "sphere", recursively: true)!
-			let popAction = SCNAction.scale(to: isSmall ? 1.0 : 0.5, duration: 1)
-			sphere?.runAction(popAction)
-			isSmall = !isSmall
-
+            
             // highlight it
             SCNTransaction.begin()
             SCNTransaction.animationDuration = 0.5
@@ -105,9 +100,7 @@ class GameViewController: UIViewController {
             SCNTransaction.commit()
         }
     }
-
-	var isSmall: Bool = false
-
+    
     override var shouldAutorotate: Bool {
         return true
     }
