@@ -24,7 +24,7 @@ class GameViewController: UIViewController {
         scene.rootNode.addChildNode(cameraNode)
         
         // place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 180)
+        cameraNode.position = SCNVector3(x: 0, y: 0, z: -100)
         
         // create and add a light to the scene
         let lightNode = SCNNode()
@@ -37,7 +37,7 @@ class GameViewController: UIViewController {
         let ambientLightNode = SCNNode()
         ambientLightNode.light = SCNLight()
         ambientLightNode.light!.type = .ambient
-        ambientLightNode.light!.color = UIColor.darkGray
+        ambientLightNode.light!.color = UIColor.lightGray
         scene.rootNode.addChildNode(ambientLightNode)
         
         // retrieve the ship node
@@ -64,6 +64,8 @@ class GameViewController: UIViewController {
         // add a tap gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         scnView.addGestureRecognizer(tapGesture)
+      
+        let skeleton = ship.skinner?.skeleton
     }
     
     func handleTap(_ gestureRecognize: UIGestureRecognizer) {
