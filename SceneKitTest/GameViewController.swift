@@ -37,6 +37,12 @@ class GameViewController: UIViewController {
     lightNode.position = SCNVector3(x: 0, y: 1000, z: 500)
     scene.rootNode.addChildNode(lightNode)
     
+    let lightNode2 = SCNNode()
+    lightNode2.light = SCNLight()
+    lightNode2.light!.type = .omni
+    lightNode2.position = SCNVector3(x: 0, y: 1000, z: -500)
+    scene.rootNode.addChildNode(lightNode2)
+    
     // create and add an ambient light to the scene
     let ambientLightNode = SCNNode()
     ambientLightNode.light = SCNLight()
