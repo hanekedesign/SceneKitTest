@@ -82,28 +82,10 @@ class GameViewController: UIViewController {
 //    let riggedSphereRoot = scene.rootNode.childNode(withName: "RiggedSphereRoot", recursively: true)!.childNodes.first!
 //    riggedSphereRoot.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: -2, z: 0, duration: 1)))
     
-    let riggedSphere = scene.rootNode.childNode(withName: "RiggedSphere", recursively: true)!
+    let riggedSphere = scene.rootNode.childNode(withName: "thyroid", recursively: true)!
     let skeleton = riggedSphere.skinner!.skeleton!
-//    riggedSphere.skinner!.bones.forEach { (bone) in
-//      bone.runAction(SCNAction.repeatForever(SCNAction.moveBy(x: 0, y: 0, z: -10, duration: 1)))
-//    }
-    
-    let jointRoot = skeleton.childNode(withName: "Joint_1_root", recursively: true)!
-    let joint = jointRoot.childNode(withName: "Joint_1", recursively: true)!
-    let jointTip = joint.childNode(withName: "Joint_1_tip", recursively: true)!
-    
-//    joint.position = SCNVector3(x: 0, y: 0, z: 0)
-//    joint.eulerAngles = SCNVector3(x: -180, y: 0, z: 0)
-    joint.scale = SCNVector3(x: 1.5, y: 1.5, z: 1.5)
-    
-    let joint2Root = skeleton.childNode(withName: "Joint_2_root", recursively: true)!
-    let joint2 = joint2Root.childNode(withName: "Joint_2", recursively: true)!
-    joint2.scale = SCNVector3(x: 1.5, y: 1.5, z: 1.5)
-    
-    let joint3Root = skeleton.childNode(withName: "Joint_3_root", recursively: true)!
-    let joint3 = joint3Root.childNode(withName: "Joint_3", recursively: true)!
-    joint3.runAction(SCNAction.scale(to: 3.0, duration: 8))
-//    joint3.scale = SCNVector3(x: 1.5, y: 1.5, z: 1.5)
+    let lTopBase = skeleton.childNode(withName: "L_Top_Base", recursively: true)!
+    lTopBase.scale = SCNVector3(x: 1.65, y: 1.65, z: 1.2)
   }
   
   func handleTap(_ gestureRecognize: UIGestureRecognizer) {
