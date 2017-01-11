@@ -79,15 +79,16 @@ class GameViewController: UIViewController {
     
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Animation tests
-//    let riggedSphereRoot = scene.rootNode.childNode(withName: "RiggedSphereRoot", recursively: true)!.childNodes.first!
-//    riggedSphereRoot.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: -2, z: 0, duration: 1)))
-    
     let riggedSphere = scene.rootNode.childNode(withName: "thyroid", recursively: true)!
     let skeleton = riggedSphere.skinner!.skeleton!
     let lTopBase = skeleton.childNode(withName: "L_Top_Base", recursively: true)!
     lTopBase.scale = SCNVector3(x: 1.65, y: 1.65, z: 1.2)
+
+    let lTopMid = skeleton.childNode(withName: "L_Top_Mid", recursively: true)!
+    lTopMid.scale = SCNVector3(x: 1.65, y: 1.65, z: 1)
+    lTopMid.rotation = SCNVector4(x: 0, y: 15.52, z: 0, w: 0)
   }
-  
+
   func handleTap(_ gestureRecognize: UIGestureRecognizer) {
     // retrieve the SCNView
     let scnView = self.view as! SCNView
