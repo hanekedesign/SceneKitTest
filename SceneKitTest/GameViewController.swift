@@ -126,10 +126,16 @@ class GameViewController: UIViewController {
 	}
 
 	func revert() {
-		let thyroidRoot = scnView.scene!.rootNode.childNode(withName: "L_root", recursively: true)!
-		let skeleton = thyroidRoot.skinner!.skeleton!
-		let lTopGlandBulge = skeleton.childNode(withName: "L_top_gland_Bulge", recursively: true)!
-		lTopGlandBulge.scale = SCNVector3(x: 0, y: 0, z: 0)
+    let thyroidOrganic = scnView.scene!.rootNode.childNode(withName: "thyroid-organic", recursively: true)!
+    let skeleton = thyroidOrganic.skinner!.skeleton!
+    let rootSkel = skeleton.childNode(withName: "thyroidRoot", recursively: true)!
+    let lRootSkel = rootSkel.childNode(withName: "L_root", recursively: true)!
+    let lTopGlandBulge = lRootSkel.childNode(withName: "L_top_counterScale", recursively: true)!
+    
+//		let thyroidRoot = scnView.scene!.rootNode.childNode(withName: "thyroid-organic", recursively: true)!
+//		let skeleton = thyroidRoot.skinner!.skeleton!
+//		let lTopGlandBulge = skeleton.childNode(withName: "L_top_gland_Bulge", recursively: true)!
+//		lTopGlandBulge.scale = SCNVector3(x: 0, y: 0, z: 0)
 		//let throidNod = scnView.scene!.rootNode.childNode(withName: "thyroidNod", recursively: true)!
 		//let skeleton = throidNod.skinner!.skeleton!
 		//let lMidBaseBack = skeleton.childNode(withName: "L_Mid_BaseBack", recursively: true)!
