@@ -17,7 +17,7 @@ class GameViewController: UIViewController {
 
 		// create a new scene
 		//let scene = SCNScene(named: "art.scnassets/sphereRigged.dae")!
-		let scene = SCNScene(named: "art.scnassets/thy+nod022317_0013.scn")!
+		let scene = SCNScene(named: "art.scnassets/thyroid_0016.scn")!
 
 		// create and add a camera to the scene
 		let cameraNode = SCNNode()
@@ -48,7 +48,9 @@ class GameViewController: UIViewController {
 		ambientLightNode.light = SCNLight()
 		ambientLightNode.light!.type = .ambient
 		ambientLightNode.light!.color = UIColor.lightGray
-		ambientLightNode.light!.intensity = 500
+		if #available(iOS 10.0, *) {
+			ambientLightNode.light!.intensity = 500
+		}
 		scene.rootNode.addChildNode(ambientLightNode)
 
 		// retrieve the ship node
@@ -74,7 +76,7 @@ class GameViewController: UIViewController {
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
 		scnView.addGestureRecognizer(tapGesture)
 
-		animations = [self.growLMidBaseBack, { self.revert(); self.growLMidBaseFront() }, { self.revert(); self.growLMidBaseSide() }, { self.revert(); self.growLMidNoduleControl() }, self.revert]
+		animations = [shrinkLTopNod, revert, shrinkLTopGlandBulge, revert, { self.shrinkLTopNod(); self.shrinkLTopGlandBulge() }, revert]
 	}
 
 	var animations: [() -> ()] = []
@@ -84,72 +86,31 @@ class GameViewController: UIViewController {
 		return view as! SCNView
 	}
 
-	func growLMidBaseBack() {
-		let throidNod = scnView.scene!.rootNode.childNode(withName: "thyroidNod", recursively: true)!
-		let skeleton = throidNod.skinner!.skeleton!
-		let lMidBaseBack = skeleton.childNode(withName: "L_Mid_BaseBack", recursively: true)!
-		lMidBaseBack.scale = SCNVector3(x: 2, y: 2, z: 2)
-		let lMidNodeCounter = skeleton.childNode(withName: "L_Mid_nodCounter", recursively: true)!
-		lMidNodeCounter.scale = SCNVector3(x: 0.5, y: 0.5, z: 0.5)
+	func shrinkLTopNod() {
+		let thyroidMesh = scnView.scene!.rootNode.childNode(withName: "thyroidMesh", recursively: true)!
+		let skeleton = thyroidMesh.skinner!.skeleton!
+
+		let lTopNod = skeleton.childNode(withName: "L_top_nod", recursively: true)!
+		lTopNod.scale = SCNVector3(x: 0, y: 0, z: 0)
 	}
 
-	func growLMidBaseFront() {
-		let throidNod = scnView.scene!.rootNode.childNode(withName: "thyroidNod", recursively: true)!
-		let skeleton = throidNod.skinner!.skeleton!
-		let lMidBaseFront = skeleton.childNode(withName: "L_Mid_BaseFrnt", recursively: true)!
-		lMidBaseFront.scale = SCNVector3(x: 2, y: 2, z: 2)
-		let lMidNodeCounter = skeleton.childNode(withName: "L_Mid_nodCounter", recursively: true)!
-		lMidNodeCounter.scale = SCNVector3(x: 0.5, y: 0.5, z: 0.5)
-	}
+	func shrinkLTopGlandBulge() {
+		let thyroidMesh = scnView.scene!.rootNode.childNode(withName: "thyroidMesh", recursively: true)!
+		let skeleton = thyroidMesh.skinner!.skeleton!
 
-	func growLMidBaseSide() {
-		let throidNod = scnView.scene!.rootNode.childNode(withName: "thyroidNod", recursively: true)!
-		let skeleton = throidNod.skinner!.skeleton!
-		let lMidBaseSide = skeleton.childNode(withName: "L_Mid_BaseSide", recursively: true)!
-		lMidBaseSide.scale = SCNVector3(x: 2, y: 2, z: 2)
-		let lMidNodeCounter = skeleton.childNode(withName: "L_Mid_nodCounter", recursively: true)!
-		lMidNodeCounter.scale = SCNVector3(x: 0.5, y: 0.5, z: 0.5)
-	}
-
-	func growLMidNoduleControl() {
-		let throidNod = scnView.scene!.rootNode.childNode(withName: "thyroidNod", recursively: true)!
-		let skeleton = throidNod.skinner!.skeleton!
-		let lMidNoduleControl = skeleton.childNode(withName: "L_Mid_nodCtrl", recursively: true)!
-		lMidNoduleControl.scale = SCNVector3(x: 3, y: 3, z: 3)
-	}
-
-	func growLMidNoduleBulge() {
-		let throidNod = scnView.scene!.rootNode.childNode(withName: "thyroidNod", recursively: true)!
-		let skeleton = throidNod.skinner!.skeleton!
-		let lMidNoduleBulge = skeleton.childNode(withName: "L_Mid_nodBulge", recursively: true)!
-		lMidNoduleBulge.scale = SCNVector3(x: 2, y: 2, z: 2)
+		let lTopGlandBulge = skeleton.childNode(withName: "L_top_glandBulge", recursively: true)!
+		lTopGlandBulge.scale = SCNVector3(x: 1, y: 1, z: 1)
 	}
 
 	func revert() {
-    let thyroidOrganic = scnView.scene!.rootNode.childNode(withName: "thyroid-organic", recursively: true)!
-    let skeleton = thyroidOrganic.skinner!.skeleton!
-    let rootSkel = skeleton.childNode(withName: "thyroidRoot", recursively: true)!
-    let lRootSkel = rootSkel.childNode(withName: "L_root", recursively: true)!
-    let lTopGlandBulge = lRootSkel.childNode(withName: "L_top_counterScale", recursively: true)!
-    
-//		let thyroidRoot = scnView.scene!.rootNode.childNode(withName: "thyroid-organic", recursively: true)!
-//		let skeleton = thyroidRoot.skinner!.skeleton!
-//		let lTopGlandBulge = skeleton.childNode(withName: "L_top_gland_Bulge", recursively: true)!
-//		lTopGlandBulge.scale = SCNVector3(x: 0, y: 0, z: 0)
-		//let throidNod = scnView.scene!.rootNode.childNode(withName: "thyroidNod", recursively: true)!
-		//let skeleton = throidNod.skinner!.skeleton!
-		//let lMidBaseBack = skeleton.childNode(withName: "L_Mid_BaseBack", recursively: true)!
-		//lMidBaseBack.scale = SCNVector3(x: 1, y: 1, z: 1)
-		//let lMidBaseFront = skeleton.childNode(withName: "L_Mid_BaseFrnt", recursively: true)!
-		//lMidBaseFront.scale = SCNVector3(x: 1, y: 1, z: 1)
-		//let lMidBaseSide = skeleton.childNode(withName: "L_Mid_BaseSide", recursively: true)!
-		//lMidBaseSide.scale = SCNVector3(x: 1, y: 1, z: 1)
-		//let lMidNodeCounter = skeleton.childNode(withName: "L_Mid_nodCounter", recursively: true)!
-		//lMidNodeCounter.scale = SCNVector3(x: 1, y: 1, z: 1)
-		//let lMidNoduleControl = skeleton.childNode(withName: "L_Mid_nodCtrl", recursively: true)!
-		//lMidNoduleControl.scale = SCNVector3(x: 0, y: 0, z: 0)
-		//let lMidNoduleBulge = skeleton.childNode(withName: "L_Mid_nodBulge", recursively: true)!
-		//lMidNoduleBulge.scale = SCNVector3(x: 2, y: 2, z: 2)
+		let thyroidMesh = scnView.scene!.rootNode.childNode(withName: "thyroidMesh", recursively: true)!
+		let skeleton = thyroidMesh.skinner!.skeleton!
+
+		let lTopNod = skeleton.childNode(withName: "L_top_nod", recursively: true)!
+		lTopNod.scale = SCNVector3(x: 2, y: 2, z: 2)
+
+		let lTopGlandBulge = skeleton.childNode(withName: "L_top_glandBulge", recursively: true)!
+		lTopGlandBulge.scale = SCNVector3(x: 2, y: 2, z: 2)
 	}
 
 	func handleTap(_ gestureRecognize: UIGestureRecognizer) {
@@ -205,18 +166,21 @@ class GameViewController: UIViewController {
 		}
 	}
 
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
-		// Release any cached data, images, etc that aren't in use.
-	}
-
 }
 
-func recursivlyPrint(node: SCNNode) {
+func recursivlyPrint(node: SCNNode, level: Int = 0) {
 	if let name = node.name {
-		print("node: \(name), scale: \(node.scale)")
+		print("\(level) node: \(name), has skinner? \(node.skinner != nil ? "yes" : "no"), scale: \(node.scale)")
 	}
-	for child in node.childNodes {
-		recursivlyPrint(node: child)
+	guard level < 10 else { return }
+	if let skeleton = node.skinner?.skeleton {
+		for child in skeleton.childNodes {
+			recursivlyPrint(node: child, level: level + 1)
+		}
+	}
+	else {
+		for child in node.childNodes {
+			recursivlyPrint(node: child, level: level + 1)
+		}
 	}
 }
