@@ -17,7 +17,7 @@ class GameViewController: UIViewController {
 
 		// create a new scene
 		//let scene = SCNScene(named: "art.scnassets/sphereRigged.dae")!
-		let scene = SCNScene(named: "art.scnassets/thyroid-base_0008-02.scn")!
+		let scene = SCNScene(named: "art.scnassets/thy+nod022317_0013.scn")!
 
 		// create and add a camera to the scene
 		let cameraNode = SCNNode()
@@ -25,9 +25,9 @@ class GameViewController: UIViewController {
 		scene.rootNode.addChildNode(cameraNode)
 
 		// place the camera
-		cameraNode.position = SCNVector3(x: 0, y: 0, z: 500)
-		cameraNode.camera?.zNear = 100
-		cameraNode.camera?.zFar = 1000
+		cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
+		cameraNode.camera?.zNear = 2
+		cameraNode.camera?.zFar = 20
 
 
 		// create and add a light to the scene
@@ -58,6 +58,7 @@ class GameViewController: UIViewController {
 		// set the scene to the view
 		scnView.scene = scene
 
+		recursivlyPrint(node: scene.rootNode)
 		revert()
 
 		// allows the user to manipulate the camera
@@ -125,20 +126,24 @@ class GameViewController: UIViewController {
 	}
 
 	func revert() {
-		let throidNod = scnView.scene!.rootNode.childNode(withName: "thyroidNod", recursively: true)!
-		let skeleton = throidNod.skinner!.skeleton!
-		let lMidBaseBack = skeleton.childNode(withName: "L_Mid_BaseBack", recursively: true)!
-		lMidBaseBack.scale = SCNVector3(x: 1, y: 1, z: 1)
-		let lMidBaseFront = skeleton.childNode(withName: "L_Mid_BaseFrnt", recursively: true)!
-		lMidBaseFront.scale = SCNVector3(x: 1, y: 1, z: 1)
-		let lMidBaseSide = skeleton.childNode(withName: "L_Mid_BaseSide", recursively: true)!
-		lMidBaseSide.scale = SCNVector3(x: 1, y: 1, z: 1)
-		let lMidNodeCounter = skeleton.childNode(withName: "L_Mid_nodCounter", recursively: true)!
-		lMidNodeCounter.scale = SCNVector3(x: 1, y: 1, z: 1)
-		let lMidNoduleControl = skeleton.childNode(withName: "L_Mid_nodCtrl", recursively: true)!
-		lMidNoduleControl.scale = SCNVector3(x: 0, y: 0, z: 0)
-		let lMidNoduleBulge = skeleton.childNode(withName: "L_Mid_nodBulge", recursively: true)!
-		lMidNoduleBulge.scale = SCNVector3(x: 2, y: 2, z: 2)
+		let thyroidRoot = scnView.scene!.rootNode.childNode(withName: "L_root", recursively: true)!
+		let skeleton = thyroidRoot.skinner!.skeleton!
+		let lTopGlandBulge = skeleton.childNode(withName: "L_top_gland_Bulge", recursively: true)!
+		lTopGlandBulge.scale = SCNVector3(x: 0, y: 0, z: 0)
+		//let throidNod = scnView.scene!.rootNode.childNode(withName: "thyroidNod", recursively: true)!
+		//let skeleton = throidNod.skinner!.skeleton!
+		//let lMidBaseBack = skeleton.childNode(withName: "L_Mid_BaseBack", recursively: true)!
+		//lMidBaseBack.scale = SCNVector3(x: 1, y: 1, z: 1)
+		//let lMidBaseFront = skeleton.childNode(withName: "L_Mid_BaseFrnt", recursively: true)!
+		//lMidBaseFront.scale = SCNVector3(x: 1, y: 1, z: 1)
+		//let lMidBaseSide = skeleton.childNode(withName: "L_Mid_BaseSide", recursively: true)!
+		//lMidBaseSide.scale = SCNVector3(x: 1, y: 1, z: 1)
+		//let lMidNodeCounter = skeleton.childNode(withName: "L_Mid_nodCounter", recursively: true)!
+		//lMidNodeCounter.scale = SCNVector3(x: 1, y: 1, z: 1)
+		//let lMidNoduleControl = skeleton.childNode(withName: "L_Mid_nodCtrl", recursively: true)!
+		//lMidNoduleControl.scale = SCNVector3(x: 0, y: 0, z: 0)
+		//let lMidNoduleBulge = skeleton.childNode(withName: "L_Mid_nodBulge", recursively: true)!
+		//lMidNoduleBulge.scale = SCNVector3(x: 2, y: 2, z: 2)
 	}
 
 	func handleTap(_ gestureRecognize: UIGestureRecognizer) {
@@ -199,4 +204,13 @@ class GameViewController: UIViewController {
 		// Release any cached data, images, etc that aren't in use.
 	}
 
+}
+
+func recursivlyPrint(node: SCNNode) {
+	if let name = node.name {
+		print("node: \(name), scale: \(node.scale)")
+	}
+	for child in node.childNodes {
+		recursivlyPrint(node: child)
+	}
 }
