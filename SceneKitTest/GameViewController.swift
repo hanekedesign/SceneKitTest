@@ -17,7 +17,7 @@ class GameViewController: UIViewController {
 
 		// create a new scene
 		//let scene = SCNScene(named: "art.scnassets/sphereRigged.dae")!
-		let scene = SCNScene(named: "art.scnassets/thyroid_0016.scn")!
+		let scene = SCNScene(named: "art.scnassets/thyroid_0034.scn")!
 
 		// create and add a camera to the scene
 		let cameraNode = SCNNode()
@@ -34,14 +34,20 @@ class GameViewController: UIViewController {
 		let lightNode = SCNNode()
 		lightNode.light = SCNLight()
 		lightNode.light!.type = .omni
-		lightNode.position = SCNVector3(x: 0, y: 1000, z: 500)
+		lightNode.position = SCNVector3(x: 0, y: 100, z: 500)
 		scene.rootNode.addChildNode(lightNode)
 
 		let lightNode2 = SCNNode()
 		lightNode2.light = SCNLight()
 		lightNode2.light!.type = .omni
-		lightNode2.position = SCNVector3(x: 0, y: 1000, z: -500)
+		lightNode2.position = SCNVector3(x: 0, y: 100, z: -500)
 		scene.rootNode.addChildNode(lightNode2)
+
+		let lightNode3 = SCNNode()
+		lightNode2.light = SCNLight()
+		lightNode2.light!.type = .omni
+		lightNode2.position = SCNVector3(x: 0, y: -100, z: -500)
+		scene.rootNode.addChildNode(lightNode3)
 
 		// create and add an ambient light to the scene
 		let ambientLightNode = SCNNode()
@@ -49,18 +55,18 @@ class GameViewController: UIViewController {
 		ambientLightNode.light!.type = .ambient
 		ambientLightNode.light!.color = UIColor.lightGray
 		if #available(iOS 10.0, *) {
-			ambientLightNode.light!.intensity = 500
+			ambientLightNode.light!.intensity = 1000
 		}
 		scene.rootNode.addChildNode(ambientLightNode)
 
-		// retrieve the ship node
+		// retrieve the root node
 		let thyroidNod = scene.rootNode.childNode(withName: "throidNod", recursively: true)
 		thyroidNod?.position = SCNVector3(x: 0, y: 120, z: 0)
 
 		// set the scene to the view
 		scnView.scene = scene
 
-		recursivlyPrint(node: scene.rootNode)
+		//recursivlyPrint(node: scene.rootNode)
 		revert()
 
 		// allows the user to manipulate the camera
@@ -76,7 +82,7 @@ class GameViewController: UIViewController {
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
 		scnView.addGestureRecognizer(tapGesture)
 
-		animations = [shrinkLTopNod, revert, shrinkLTopGlandBulge, revert, { self.shrinkLTopNod(); self.shrinkLTopGlandBulge() }, revert]
+		animations = [leftLobeWidth, revert, rightLobeWidth, revert, leftTopNodule, revert]
 	}
 
 	var animations: [() -> ()] = []
@@ -86,31 +92,129 @@ class GameViewController: UIViewController {
 		return view as! SCNView
 	}
 
-	func shrinkLTopNod() {
-		let thyroidMesh = scnView.scene!.rootNode.childNode(withName: "thyroidMesh", recursively: true)!
-		let skeleton = thyroidMesh.skinner!.skeleton!
-
-		let lTopNod = skeleton.childNode(withName: "L_top_nod", recursively: true)!
-		lTopNod.scale = SCNVector3(x: 0, y: 0, z: 0)
-	}
-
-	func shrinkLTopGlandBulge() {
-		let thyroidMesh = scnView.scene!.rootNode.childNode(withName: "thyroidMesh", recursively: true)!
-		let skeleton = thyroidMesh.skinner!.skeleton!
-
-		let lTopGlandBulge = skeleton.childNode(withName: "L_top_glandBulge", recursively: true)!
-		lTopGlandBulge.scale = SCNVector3(x: 1, y: 1, z: 1)
-	}
-
 	func revert() {
 		let thyroidMesh = scnView.scene!.rootNode.childNode(withName: "thyroidMesh", recursively: true)!
 		let skeleton = thyroidMesh.skinner!.skeleton!
 
-		let lTopNod = skeleton.childNode(withName: "L_top_nod", recursively: true)!
-		lTopNod.scale = SCNVector3(x: 2, y: 2, z: 2)
+		let lLobeWhole = skeleton.childNode(withName: "L_LobeWhole", recursively: true)!
+		lLobeWhole.position = SCNVector3(x: 1.14, y: 0.0, z: -0.01)
+		lLobeWhole.scale = SCNVector3(x: 1.0, y: 1.0, z: 1.0)
 
-		let lTopGlandBulge = skeleton.childNode(withName: "L_top_glandBulge", recursively: true)!
-		lTopGlandBulge.scale = SCNVector3(x: 2, y: 2, z: 2)
+		let lTopLobe = skeleton.childNode(withName: "L_top_Lobe", recursively: true)!
+		lTopLobe.scale = SCNVector3(x: 1.0, y: 1.0, z: 1.0)
+
+		let lMidLobe = skeleton.childNode(withName: "L_mid_Lobe", recursively: true)!
+		lMidLobe.scale = SCNVector3(x: 1.0, y: 1.0, z: 1.0)
+
+		let lBtmLobe = skeleton.childNode(withName: "L_btm_Lobe", recursively: true)!
+		lBtmLobe.scale = SCNVector3(x: 1.0, y: 1.0, z: 1.0)
+
+		let lTopCounter = skeleton.childNode(withName: "L_top_counter", recursively: true)!
+		lTopCounter.scale = SCNVector3(x: 1.0, y: 1.0, z: 1.0)
+
+		let lMidCounter = skeleton.childNode(withName: "L_mid_counter", recursively: true)!
+		lMidCounter.scale = SCNVector3(x: 1.0, y: 1.0, z: 1.0)
+
+		let rLobeWhole = skeleton.childNode(withName: "R_LobeWhole", recursively: true)!
+		rLobeWhole.position = SCNVector3(x: -1.14, y: 0.0, z: -0.01)
+		rLobeWhole.scale = SCNVector3(x: 1.0, y: 1.0, z: 1.0)
+
+		let rTopLobe = skeleton.childNode(withName: "R_top_Lobe", recursively: true)!
+		rTopLobe.scale = SCNVector3(x: 1.0, y: 1.0, z: 1.0)
+
+		let rMidLobe = skeleton.childNode(withName: "R_mid_Lobe", recursively: true)!
+		rMidLobe.scale = SCNVector3(x: 1.0, y: 1.0, z: 1.0)
+
+		let rBtmLobe = skeleton.childNode(withName: "R_btm_Lobe", recursively: true)!
+		rBtmLobe.scale = SCNVector3(x: 1.0, y: 1.0, z: 1.0)
+
+		let rTopCounter = skeleton.childNode(withName: "R_top_counter", recursively: true)!
+		rTopCounter.scale = SCNVector3(x: 1.0, y: 1.0, z: 1.0)
+
+		let rMidCounter = skeleton.childNode(withName: "R_mid_counter", recursively: true)!
+		rMidCounter.scale = SCNVector3(x: 1.0, y: 1.0, z: 1.0)
+		
+		let isthmusGlandScale = skeleton.childNode(withName: "isthmus_glandScale", recursively: true)!
+		isthmusGlandScale.scale = SCNVector3(x: 1.0, y: 1.0, z: 1.0)
+
+		let isthmusNodScale = skeleton.childNode(withName: "isthmus_nodScale", recursively: true)!
+		isthmusNodScale.scale = SCNVector3(x: 0.25, y: 0.25, z: 0.25)
+		isthmusNodScale.opacity = 1
+
+		let lTopGlandScale = skeleton.childNode(withName: "L_top_glandScale", recursively: true)!
+		lTopGlandScale.position = SCNVector3(x: 0.0, y: 0.0, z: 0.0)
+		lTopGlandScale.scale = SCNVector3(x: 1.0, y: 1.0, z: 1.0)
+		lTopGlandScale.rotation = SCNVector4(x: 0.0, y: 0.0, z: 0.0, w: 0.0)
+
+		let lTopNodScale = skeleton.childNode(withName: "L_top_nodScale", recursively: true)!
+		lTopNodScale.position = SCNVector3(x: 0.0, y: 0.0, z: 0.0)
+		lTopNodScale.scale = SCNVector3(x: 0.25, y: 0.25, z: 0.25)
+		lTopNodScale.rotation = SCNVector4(x: 0.0, y: 0.0, z: 0.0, w: 0.0)
+		lTopNodScale.opacity = 1
+	}
+	
+	func leftLobeWidth() {
+		let thyroidMesh = scnView.scene!.rootNode.childNode(withName: "thyroidMesh", recursively: true)!
+		let skeleton = thyroidMesh.skinner!.skeleton!
+
+		let lLobeWhole = skeleton.childNode(withName: "L_LobeWhole", recursively: true)!
+		lLobeWhole.position = SCNVector3(x: 2.5, y: 0.0, z: -0.01)
+		lLobeWhole.scale = SCNVector3(x: 1.9, y: 1.4, z: 1.4)
+
+		let lTopLobe = skeleton.childNode(withName: "L_top_Lobe", recursively: true)!
+		lTopLobe.scale = SCNVector3(x: 2.0, y: 2.0, z: 2.0)
+
+		let lMidLobe = skeleton.childNode(withName: "L_mid_Lobe", recursively: true)!
+		lMidLobe.scale = SCNVector3(x: 2.0, y: 2.0, z: 2.0)
+
+		let lBtmLobe = skeleton.childNode(withName: "L_btm_Lobe", recursively: true)!
+		lBtmLobe.scale = SCNVector3(x: 2.0, y: 2.0, z: 2.0)
+
+		let lTopCounter = skeleton.childNode(withName: "L_top_counter", recursively: true)!
+		lTopCounter.scale = SCNVector3(x: 1 / lLobeWhole.scale.x * 1 / lTopLobe.scale.x, y: 1 / lLobeWhole.scale.y * 1 / lTopLobe.scale.y, z: 1 / lLobeWhole.scale.z * 1 / lTopLobe.scale.z)
+
+		let lMidCounter = skeleton.childNode(withName: "L_mid_counter", recursively: true)!
+		lMidCounter.scale = SCNVector3(x: 1 / lLobeWhole.scale.x * 1 / lMidLobe.scale.x, y: 1 / lLobeWhole.scale.y * 1 / lMidLobe.scale.y, z: 1 / lLobeWhole.scale.z * 1 / lMidLobe.scale.z)
+	}
+	
+	func rightLobeWidth() {
+		let thyroidMesh = scnView.scene!.rootNode.childNode(withName: "thyroidMesh", recursively: true)!
+		let skeleton = thyroidMesh.skinner!.skeleton!
+
+		let rLobeWhole = skeleton.childNode(withName: "R_LobeWhole", recursively: true)!
+		rLobeWhole.position = SCNVector3(x: -0.22, y: 0.0, z: -0.01)
+		rLobeWhole.scale = SCNVector3(x: 1.9, y: 1.4, z: 1.4)
+
+		let rTopLobe = skeleton.childNode(withName: "R_top_Lobe", recursively: true)!
+		rTopLobe.scale = SCNVector3(x: 2.0, y: 2.0, z: 2.0)
+
+		let rMidLobe = skeleton.childNode(withName: "R_mid_Lobe", recursively: true)!
+		rMidLobe.scale = SCNVector3(x: 2.0, y: 2.0, z: 2.0)
+
+		let rBtmLobe = skeleton.childNode(withName: "R_btm_Lobe", recursively: true)!
+		rBtmLobe.scale = SCNVector3(x: 2.0, y: 2.0, z: 2.0)
+
+		let rTopCounter = skeleton.childNode(withName: "R_top_counter", recursively: true)!
+		rTopCounter.scale = SCNVector3(x: 1 / rLobeWhole.scale.x * 1 / rTopLobe.scale.x, y: 1 / rLobeWhole.scale.y * 1 / rTopLobe.scale.y, z: 1 / rLobeWhole.scale.z * 1 / rTopLobe.scale.z)
+
+		let rMidCounter = skeleton.childNode(withName: "R_mid_counter", recursively: true)!
+		rMidCounter.scale = SCNVector3(x: 1 / rLobeWhole.scale.x * 1 / rMidLobe.scale.x, y: 1 / rLobeWhole.scale.y * 1 / rMidLobe.scale.y, z: 1 / rLobeWhole.scale.z * 1 / rMidLobe.scale.z)
+}
+
+	func leftTopNodule() {
+		let thyroidMesh = scnView.scene!.rootNode.childNode(withName: "thyroidMesh", recursively: true)!
+		let skeleton = thyroidMesh.skinner!.skeleton!
+
+		let lTopGlandScale = skeleton.childNode(withName: "L_top_glandScale", recursively: true)!
+		lTopGlandScale.position = SCNVector3(x: 0.0, y: 0.0, z: 1.0)
+		lTopGlandScale.scale = SCNVector3(x: 6.0, y: 6.0, z: 6.0)
+		lTopGlandScale.rotation = SCNVector4(x: 0.0, y: 0.305, z: 0.0, w: 0.0)
+
+		let lTopNodScale = skeleton.childNode(withName: "L_top_nodScale", recursively: true)!
+		lTopNodScale.position = SCNVector3(x: 0.0, y: -0.2, z: 0.0)
+		lTopNodScale.scale = SCNVector3(x: 5.0, y: 5.0, z: 5.5)
+		lTopNodScale.rotation = SCNVector4(x: 0.0, y: 0.079, z: 0.0, w: 0.0)
+		lTopNodScale.opacity = 0
 	}
 
 	func handleTap(_ gestureRecognize: UIGestureRecognizer) {
@@ -168,11 +272,14 @@ class GameViewController: UIViewController {
 
 }
 
+var visited: [SCNNode: Bool] = [:]
+
 func recursivlyPrint(node: SCNNode, level: Int = 0) {
+	if visited[node] == true { return }
+	visited[node] = true
 	if let name = node.name {
-		print("\(level) node: \(name), has skinner? \(node.skinner != nil ? "yes" : "no"), scale: \(node.scale)")
+		print("\(level) skinner? \(node.skinner != nil ? "yes" : "no"), scale: \(node.scale), node: \(name)")
 	}
-	guard level < 10 else { return }
 	if let skeleton = node.skinner?.skeleton {
 		for child in skeleton.childNodes {
 			recursivlyPrint(node: child, level: level + 1)
