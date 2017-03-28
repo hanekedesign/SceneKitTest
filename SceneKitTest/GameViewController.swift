@@ -16,7 +16,6 @@ class GameViewController: UIViewController {
 		super.viewDidLoad()
 
 		// create a new scene
-		//let scene = SCNScene(named: "art.scnassets/sphereRigged.dae")!
 		let scene = SCNScene(named: "art.scnassets/thyroid_0034.scn")!
 
 		// create and add a camera to the scene
@@ -236,12 +235,13 @@ class GameViewController: UIViewController {
 			SCNTransaction.begin()
 			SCNTransaction.animationDuration = 0.5
 
+			let save_contents = material.emission.contents
 			// on completion - unhighlight
 			SCNTransaction.completionBlock = {
 				SCNTransaction.begin()
 				SCNTransaction.animationDuration = 0.5
 
-				material.emission.contents = UIColor.black
+				material.emission.contents = save_contents
 				SCNTransaction.commit()
 			}
 
